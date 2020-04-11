@@ -1,0 +1,357 @@
+LABORATORIO IV
+CLASE 1 - 26/03
+
+styles.css -- todos los estilos
+assets -- fotos, documentos, blabla
+
+conectar y crearse una cuenta en heroku
+heroku.com
+los ejercicios tienen que estar subidos ahí
+hay que armar los sitios y subir ahí los ejercicios
+
+para correr --- ng serve -o
+
+INSTALAR ANGULAR Y CREAR APLICACION
+npm install -g @angular/cli
+ng new my-dream-app
+cd my-dream-app
+ng serve        /      ng serve -o
+
+
+ng new ciclodevida
+y
+css
+
+click derecho sobre la carpeta ciclodevida que creó y abro con visual code
+
+en la consola escribo ng serve --o para levantarlo a ver si funciona
+	tarda, tira un errocito en amarillo pero arranca a hacer cosas
+abre la ventna del navegador
+
+si ya tengo ociupado 4200 tengo que poner ng serve --port 4201 (por ejemplo)
+
+generar un nuevo componente además del app:
+ng generate component componentes/bienvenidos -- nombre de la carpeta que va a generar dentro de app
+crea todos los archivos .css .html y .ts
+modifica el app.module.ts
+
+dentro de app.componet.html	--	pone con h1 título
+en export class APPComponet
+si en el app.componet.ts tengo publica la variable, la puedo usar en el html a través del BINDEO
+tengo que anotarla entre llaves en el html: Titulo: {{title}}
+El BINDEO es un enlace entre html y typescript
+
+Desde el html también se le puede dar un valor al typescript:
+en typescript agrego:  name: string
+en el html agrego: input type="text" [(ngModel)]="Name"
+en el app.module.ts pongo arriba import{ FormsModule } from '@angular/forms';
+en el imports: del app.modules.ts tengo que agregar al final FormsModule
+
+Es un doble BINDEO, desde el html le doy info a typescript
+
+
+Creo en export class AppComponent un objeto
+usuario={email:'',pass:''}
+
+En el html tengo
+input type="text" [(ngModel)]="usuario.email"
+input type="text" [(ngModel)]="usuario.pass"
+
+
+En el html genero un button Ingresar  button (click)="Ingresar()"
+
+Dentro de typescript definimos la funcion Ingresar() { console.log(this.usuario);}
+
+
+QUEDÓ ENTONCES:
+
+		app.component.html
+
+<h1>Titulo: {{title}}</h1>
+ 
+<h1>email: {{usuario.email}}</h1>
+<h1>password: {{usuario.pass}}</h1>
+ 
+<input type="text" [(ngModel)]="usuario.email">
+ 
+<input type="text" [(ngModel)]="usuario.pass">
+ 
+<button (click)="Ingresar()">Ingresar</button>
+
+
+		app.componet.ts
+
+import { Component } from '@angular/core';
+ 
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  title = 'Nueva Aplicación';
+  name: string;
+ 
+  usuario = { email: '', pass: '' };
+ 
+  Ingresar() {
+    console.log(this.usuario);
+  }
+}
+
+		app.module.ts
+		
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+
+import { AppComponent } from './app.component';
+import { BienvenidosComponent } from './componentes/bienvenidos/bienvenidos.component';
+import { FormsModule } from '@angular/forms';
+
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    BienvenidosComponent
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule
+
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+
+	CREAR UNA CLASE
+en consola ---- ng g class clases/usuario
+Genera un archivo ts que porta una clase usuario
+agregamos email y pass como string --- email:string; pass:string;
+
+en el app.component.ts usamos la clase ----  usuario = new Usuario()    en lugar de email y pass
+Arriba tenemos que importar la clase --- import { Usuario } from './clases/usuario'
+
+SE USAN DOS CONSOLAS. UNA CON EL SERVIDOR CORRIENDO, LA OTRA PARA CREAR COMPONENTES, CLASES, ETC
+
+Genero un nuevo componete ng g component componentes/login
+Genero un nuevo componete ng g component componentes/error
+
+
+Aca dejo el package.json de la app de juegos, tuve que actualizar la version del proyecto de angular cli (https://stackoverflow.com/questions/54346342/the-build-command-requires-to-be-run-in-an-angular-project-but-a-project-defini) Y van a tener que tocar en codigo dependencias que cambiaron de lugar (HttpClient, Observables)
+
+
+
+CLASE 2 - 02/04
+
+TP -- almacenamiento en el localStorage
+
+Todo lo que se pone entre las llaves en el html es código typescriptque después html interpreta
+
+ng serve -o  -- en la consola para que abra chrome directamente
+
+Routeo: Navegar entre componentes
+por ejemplo   localhost:4200/login  localhost:4200/home
+
+Generar el archivo de routing
+ng g module app-routing --flat --module=app
+
+Tiene que tener una constante que va a ser un json con la ruta que va a ejecutar
+
+const routes: Routes =[{path: 'bienvenidos',component: BienvenidosComponent}]
+
+GENERAR LAS RUTAS EN UNA CONSTANTE
+const routes: Routes =[
+{path: 'bienvenidos',component: BienvenidosComponent},
+{path: '',component: LoginComponent},
+{path: '**',component: ErrorComponent},   ---- cualquier cosa que no sea lo anterior
+]
+
+appcomponet.html --- <router-outlet></router-outlet>
+
+
+app-routing.module.ts
+
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { BienvenidosComponent } from './componentes/bienvenidos/bienvenidos.component';
+import { LoginComponent } from './componentes/login/login.component';
+import { ErrorComponent } from './componentes/error/error.component';
+
+const routes: Routes = [
+  {path:'bienvenidos', component:BienvenidosComponent},
+  {path:'',component:LoginComponent},
+  {path:'**',component:ErrorComponent}
+]
+
+@NgModule({
+  declarations: [],
+  imports: [RouterModule.forRoot(routes)],
+ exports: [RouterModule]
+})
+export class AppRoutingModule { }
+
+
+Tuve que cambiar el imports y exports por
+
+  imports: [RouterModule.forRoot(routes)],
+ exports: [RouterModule]
+ 
+Borré un import que tenía y ya no usaba, y le agregué: import { Routes, RouterModule } from '@angular/router';
+
+
+En el app-component.html queda SOLAMENTE <router-outlet></router-outlet>
+
+
+con el tag a routerLink=ruta   mando un link de redireccionamiento
+
+genero otro componente ng g component componentes/home
+En el login-component.html ponemos el código html que ya teníamos con el botón Ingresar
+
+
+Todo esto en login.ts
+
+A la función ingresar le agregamos:
+if(this.usuario.email == 'admin@mail.com' && this.usuario.password=='1234')
+this.route.navigate(['home'])        --------- ese home tiene que ser igual al del routes
+else
+this.route.navigate(['error'])
+
+AGREGAR UNA RUTA para home
+Para poder utilizar el home hay que llevarlo al login.component.ts
+
+constructor(private route: Router) {}
+
+
+Dentro de los componentes solo debería haber como mucho algunos if y redireccionamientos
+La lógica va dentro de cada clase
+
+
+const routes: Routes = [
+  {path:'', component:BienvenidosComponent},
+  {path:'home', component:HomeComponent},
+  {path:'login',component:LoginComponent},
+  {path:'**',component:ErrorComponent}
+]
+
+el más genérico siempre va último
+
+
+HEROKU
+Crear aplicación nueva
+asociar github a Heroku
+
+Desde la consola hago 
+git init
+git add -A
+git commit -a -m "primer paquete"
+
+Ahora hay que configurar la aplicación
+Entrar a package.json
+Agarrar @angular/cli y @angular/compiler-cli de devDependencies y copiarlas al gap de arriba
+Copiar arriba también la de typescript
+
+Agregar en la sección de scripts al final:
+"postinstall":"ng build --output-path angularapp --aot --prod"
+
+por último, agrego un nuevo tag abajo del "private":true,
+"engines": {
+"node";"v10.16.3", ---es la versión que tenga yo
+"npm":"6.9.0"
+},
+
+Dentro del tag Scripts tengo que cambiar el start
+y le pongo
+"start": "node server.js"
+
+
+Para saber qué versión tengo, en consola ejecuto
+node -v
+npm -v
+
+Si se actualiza el node hay que actualizar este archivo a mano
+
+Hay que instalar una libreria de node desde la consola
+Dentro de Heroku permite que se utilice node para levantar la aplicación
+
+	npm install --save express path
+
+
+Dentro de nuestra carpeta crear un archivo nuevo 		server.js
+Es el que va a usar Heroku para que funcione la app
+
+
+const express = require('express');
+const app = express();
+const path = require('path');
+
+app.use(express.static(__dirname + '/angularapp'));
+
+app.listen(process.env.PORT || 8080);
+
+app.get('/*', function(req,res){
+	res.sendFile(path.join(__dirname + '/angularapp/index.html'));
+});
+
+console.log('Finalizo!!');
+
+
+Pushear a Git todo y conectar el heroku con el repositorio
+
+
+
+
+CLASE 3 - 09/04
+*ngIf="expression"
+*ngFor="let item of lista"
+
+*ngIf="expression"    si se cumple la condición muestra el mensaje
+
+En el ts creo expression = true;
+Cuando se cumple entonces la condición, me muestra el mensaje que está en el html
+<h1 *ngIf="expression"> Bienvenido administrador</h1>
+
+<h1 [hidden]="expression">     sirve para lo mismo
+
+La diferencia es que con el ng-if no se ve como si estuviera en el F12
+El hidden te lo muestra, entonces desde del F12 podés modificarlo o borrarlo
+
+ng-if reacciona a true
+hidden reacciona a false
+
+Todo lo que se pone entre {} o comillas en un .html es una condición que se pone como si fuera en el .ts
+
+FOR EN ANGULAR
+<p *ngFor="let item of lista">{{item.name}}</p>
+
+Repite todo el bloque de código html que esté dentro del for, por la cantidad de objetos que tiene la lista
+<div *ngFor="let item of lista">
+    <span>Nombre: </span> {{item.name}}
+    <br>
+    <span>Perfil: </span> {{item.perfil}}
+</div>
+
+
+INPUT Y OUTPUT
+para declarar un output se usa  EventEmitter
+@Output() alumnoCreado: EventEmitter <any> = new EventEmitter <any>()
+
+@Input() para que un atributo pueda verse y escribirse desde otro lado
+
+
+
+BAJAR UN CÓDIGO DEL GITHUB DE OCTAVIO
+SIN NODE-MODULES
+Abrir la consola
+npm i          para crear las carpetas faltantes
+ng serve -o    para ejecutarlo
+
+
+
+
+
+
+
+
+
