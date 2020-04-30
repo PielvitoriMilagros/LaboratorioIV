@@ -1,0 +1,14 @@
+<div *ngIf="detallesEntrada"  class="card mb-3" style="max-width: 540px;">
+    <div class="row no-gutters">
+      <div class="col-md-4">
+        <img [src]="detallesEntrada.imagen" class="card-img" alt="...">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title">{{detallesEntrada.titulo}}</h5>
+          <h5 class="card-title">{{detallesEntrada.fecha}}</h5>
+          <button (click)="eliminarPelicula()" class="btn btn-danger">Eliminar pelicula</button>
+        </div>
+      </div>
+    </div>
+  </div>

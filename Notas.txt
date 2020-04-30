@@ -147,21 +147,23 @@ CLASE 2 - 02/04
 
 TP -- almacenamiento en el localStorage
 
-Todo lo que se pone entre las llaves en el html es código typescriptque después html interpreta
+Todo lo que se pone entre las llaves en el html es código typescript que después html interpreta
 
 ng serve -o  -- en la consola para que abra chrome directamente
 
 Routeo: Navegar entre componentes
 por ejemplo   localhost:4200/login  localhost:4200/home
 
-Generar el archivo de routing
+Generar el archivo de routing (SI NO LO TENGO)
 ng g module app-routing --flat --module=app
 
 Tiene que tener una constante que va a ser un json con la ruta que va a ejecutar
 
+GENERAR LAS RUTAS EN UNA CONSTANTE
+
 const routes: Routes =[{path: 'bienvenidos',component: BienvenidosComponent}]
 
-GENERAR LAS RUTAS EN UNA CONSTANTE
+con varias rutas, quedaría algo así:
 const routes: Routes =[
 {path: 'bienvenidos',component: BienvenidosComponent},
 {path: '',component: LoginComponent},
@@ -349,9 +351,134 @@ ng serve -o    para ejecutarlo
 
 
 
+CLASE 4 - 16/04
+
+Un @input es un atributo, una propiedad en ts 
+El input puede tener nada más la definición y en el html las directivas
+en el output va a tener que implementarse un método o desarrollar algún tipo de código
+
+Todos los componentes es comunican mediante el Principal, es el nexo entre todos los componentes
+El @output es un evento en el html
+
+ngTemplate es un pedazo de html que puede recibir una referencia
+ngIf="estado=="cargado" else loading"
+
+ngTemplate #loading
+
+Entonces, ya digo en el ngIf que si va al else haga loading
+y con el ngTemplate cargo qué va a ser el loading
+
+
+Material.angular.io
+Se instala a través del comando y se importa lo que quieras utilizar
+
+
+PARA CREAR UN NUEVO PROYECTO DE ANGULAR
+Abro un cmd
+Voy hasta donde quiero, o abro el Visual Code y la consola
+
+ng new miProyecto   (tarda un montonazo)
+cd miProyecto
+ng serve -o
+
+
+
+** En el TP hay que poner el nombre en Quién Soy, y además qué hace mi juego
+
+Octavio Villegas20:42
+Hoy ponemos nota al cambio de imagen
+La clase que viene ponemos nota al que logro cambiar todos los estilos
+La siguiente clase ... Todos los juegos funcionado
+Y la ultima corrección se califica el juego propio
+Se suman las notas de cada semana y se dividen por las 4 correciones ... Ahi tenes tu nota del TP
+
+Hay que cambiar bien bien el estilo.
+Ningún botón del profesor, ningún botón de un compañero
+Se puede usar Angular Material. Lo primero que hay que cambiar es el quien soy y ponerle la descripción del juego.
+El login debería poder funcionar contra el localStorage.
+Debería ser responsive, con material o bootstrap.
 
 
 
 
+CLASE 23/04
+Servicios
+
+Una vez que la aplicación levanta, el servicio se activa y aunque nos movamos de componentes, siguen viviendo
+Los componentes no
+Los servicios se utilizan para comunicarse con una API, con firebase, o para guardar información que necesitemos en otro componente
+Loguearnos, info del usuario en servicio, aunque nos movamos por las páginas siempre tenemos esa información, en todos los componentes.
+
+Para crear un servicio: ng g service servicios/miservicio
+Un servicio por cada proveedor o API
+En el app.module.ts
+	en la parte de providers:[MiServicioService]
+
+https://restcountries.eu/
+
+Para consultar esa ruta, en nuestro servicio, se utiliza el modulo de http que está en angular
+Además de utilizarlo ahí, hay que agregarlo en los módulos que utiliza nuestra app
+	en app.module.ts agregamos HttpClientModule
+	así podemos hacer una petición a una API
 
 
+constructor(private http:HttpClient)
+
+public obtenerPaises(){
+
+this.http.get("https://restcountries.eu");
+
+QUEDA EN EL APP.MODULE arriba
+import { MiservicioService } from './servicios/miservicio.service';
+import { HttpClientModule } from '@angular/common/http';
+
+en el imports:
+HttpClientModule
+}
+providers:[MiServicioService]
+
+Al home.componet.ts le agrego:
+constructor(private miservicio:MiservicioService) {
+
+
+y en el ngOnInit() llamo al servicio
+this.miservicio.obtenerPaises();
+
+EN EL SERVICIO
+public obtenerPaises(){
+  return this.http.get("https://restcountries.eu/rest/v2/");
+}
+
+
+Ahora lo que hay que hacer es suscribirse al observable
+    this.miservicio.obtenerPaises().subscribe(resultado=>{
+      console.log(resultado);
+    }, error =>{
+      console.log(error);
+    });
+
+En los observables y peticiones http
+El primer valor, es si devuelve un 200
+El siguiente valor, es un error
+
+Puedo poner en el environment urlPaises: 'https://restcountries.eu/rest/v2/';
+y después reemplazo en mi servico:
+
+export class MiservicioService {
+private url = environment.urlPaises;
+  constructor(private http: HttpClient) { }
+
+public obtenerPaises(){
+  return this.http.get(this.url);
+  }
+  
+Corrección del tp
+	Capurro y Desario perfecto
+	Avanzar con la lógica y el juego propio
+	
+	
+	
+	
+	
+	
+	
