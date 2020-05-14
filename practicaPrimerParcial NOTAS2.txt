@@ -1,0 +1,42 @@
+CREAR APP CON ALE
+	ng new nombre_aplicacion --routing
+Una vez que termina cierro la ventana, abro la carpeta con el Visual, abro la terminal y
+	ng serve -o
+	
+CREO COMPONENTES
+	ng g c pages/home
+	ng g c pages/AdminPeliculas
+	ng g c components/peliculas
+
+CREO CLASES
+	ng g class clases/usuario
+	
+selector: 'app-detalle-pelicula', ---- el nombre con el que voy a llamar al componente desde el principal
+
+PARA USAR BOOTSTRAP
+	copio css y js
+	lo pongo en el index.html
+	 el css arriba de head
+	 el js arriba del /body
+
+busco cards o album el que quiero
+	en F12 selcciono lo que quiero y hago copy outerHTML
+
+
+PARA EMITIR UN EVENTO
+Primero el nombre con el que voy a identificar lo que estoy mandando : tipo EventEmitter
+Lo tiene que importar de @angular/core
+
+@Output() detallePelicula : EventEmitter<Pelicula> = new EventEmitter<Pelicula>();
+
+PARA USARLO DESPUÉS EN UNA FUNCIÓN
+      this.detallePelicula.emit(pelicula);
+
+
+@Input() peliculaABorrar: Pelicula;
+
+
+
+
+	
+	

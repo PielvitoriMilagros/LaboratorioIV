@@ -434,7 +434,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 en el imports:
 HttpClientModule
-}
+
 providers:[MiServicioService]
 
 Al home.componet.ts le agrego:

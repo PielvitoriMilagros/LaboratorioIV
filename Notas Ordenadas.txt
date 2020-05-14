@@ -1,0 +1,90 @@
+PRACTICA PRIMER PARCIAL
+
+-Abro consola de Git en nuevo repositorio
+	ng new primerParcial --routing
+-Cierro consola, arrastro carpeta a Visual y
+	ng serve -o
+
+-Crear componentes (y páginas)
+	ng g c pages/home
+	ng g c componentes/alumno
+
+-Crear clases
+	ng g class clases/usuario
+
+-Crear servicio
+	ng g service servicios/miservicio
+	APP.MODULE
+		import {HttpClientModule} from '@angular/common/http';
+		imports: [ HttpClientModule,
+	SERVICIO.TS
+		import {HttpClient} from '@angular/common/http';
+		
+		constructor(private httpClient:HttpClient) { }
+		obtenerPeliculas(){
+		return this.httpClient.get('http://www.omdbapi.com/?s=bat&apikey=a8d854de');
+		}
+	HOME
+		constructor(private peliculasService: PeliculasService) {
+			this.peliculasService.obtenerPeliculas().subscribe( (resp:any)=>{
+				const films = resp.Search;
+				films.forEach(element => {
+					const aux= new Pelicula(element.Title,element.Year,element.Poster,element.imdbID);
+					this.peliculas.push(aux);
+				});
+			}, errores=>{
+				console.log(errores);
+			} );
+		}
+
+-Usar bootstrap
+En el index.html
+	Copiar el css arriba del tag head
+	Copiar el js arriba del tag /body
+
+-Enviar dato de a otro componente
+	@Output() detallePelicula : EventEmitter<Pelicula> = new EventEmitter<Pelicula>();
+	this.detallePelicula.emit(pelicula);
+
+-Recibir dato de otro componente
+	@Input() peliculaDetalle: Peliculas;
+	
+- Routing
+
+const routes: Routes = [
+  {path: 'bienvenido', component:BienvenidoComponent},
+  {path: 'peliculas', component: AdminPeliculasComponent},
+];
+
+
+FIREBASE
+- Crear proyecto desde página
+Consola:
+	ng build
+	firebase init
+	firebase deploy
+Cambios:
+	ng build
+	firebase deploy
+	
+	
+Un servicio se ejecuta una sola vez dentro de un constructor
+
+Guard
+ng g guard guard/miGuard
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+TPFINAL
+2 imagenes por usuario
+CAPTCHA (parecido al adivina el número de la sala de juegos)
+	Poner uno propio y el de google. Poner un botón que los deshabilite para testing
+	En cada pantalla un captcha, no en la misma los dos, o tener dos login
+Revisar el canActivate en el tutorial de heroes
+Revisar angular uploadFile https://valor-software.com/ng2-file-upload/
+
+Login
+	Genera Json Web Token
+	Guarda en local storage
+
+
