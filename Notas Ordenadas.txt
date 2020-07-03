@@ -4,6 +4,17 @@ PRACTICA PRIMER PARCIAL
 	ng new primerParcial --routing
 -Cierro consola, arrastro carpeta a Visual y
 	ng serve -o
+	ng serve --port 4201
+
+- Routing
+
+Generar el archivo de routing (SI NO LO TENGO)
+ng g module app-routing --flat --module=app
+
+const routes: Routes = [
+  {path: 'bienvenido', component:BienvenidoComponent},
+  {path: 'peliculas', component: AdminPeliculasComponent},
+];
 
 -Crear componentes (y páginas)
 	ng g c pages/home
@@ -48,13 +59,6 @@ En el index.html
 
 -Recibir dato de otro componente
 	@Input() peliculaDetalle: Peliculas;
-	
-- Routing
-
-const routes: Routes = [
-  {path: 'bienvenido', component:BienvenidoComponent},
-  {path: 'peliculas', component: AdminPeliculasComponent},
-];
 
 
 FIREBASE
@@ -62,6 +66,7 @@ FIREBASE
 Consola:
 	ng build
 	firebase init
+			poner dist/nombreProyecto en vez de public y decirle que no quiero sobreescribir el index
 	firebase deploy
 Cambios:
 	ng build
@@ -72,11 +77,12 @@ Un servicio se ejecuta una sola vez dentro de un constructor
 
 Guard
 ng g guard guard/miGuard
+	selecciono canActivate
+	
 
 --------------------------------------------------------------------------------------------------------------------------------
 
 TPFINAL
-2 imagenes por usuario
 CAPTCHA (parecido al adivina el número de la sala de juegos)
 	Poner uno propio y el de google. Poner un botón que los deshabilite para testing
 	En cada pantalla un captcha, no en la misma los dos, o tener dos login
@@ -86,5 +92,77 @@ Revisar angular uploadFile https://valor-software.com/ng2-file-upload/
 Login
 	Genera Json Web Token
 	Guarda en local storage
+https://github.com/octaviovillegas/LaboIV-Auth
+Login y registro no tendrían que tener canActivate
+	Validar ahí adentro qué tipo de usuario es el que ingresa
 
+Al cliente le llega el mail y empieza a pedir turno
+El profesional aparte de recibir el mail, necesita que un administrador lo autorice
+
+Agregar metadata en las fotos
+
+README
+qué hace tu aplicación, breve texto (pantalla, video o ayuda)
+mini tutorial de cómo utilizar la aplicación
+tp apellido nombre
+direccion
+logo o pantalla
+Ingreso a la Web
+Pedir turnos
+Paramedicos
+
+
+ ANIMATIONS
+ 
+ app.module
+ BrowserAnimationsModule
+ 
+ a la ruta se le agrega en el app-routing
+ LoginComponent, data:{animation: 'Login'}
+ 
+ animation.ts en el service
+ 
+app.componet.html
+		hay que meter el router-outlet en un div
+		<div [@routeAnimations]="prepareRoute(outlet)">
+			<router-outlet #outlet="outlet">
+app.component.ts
+animations:[slideInAnimation]
+		incluirlo en el @Component
+		prepareRoute......
+		
+ANIMATIONS
+	app.module --> Importar BrowserAnimationsModule
+	app.routing --> Agregar luego del component data:{animation: 'Login'}
+	app.component.html
+		<div [@routeAnimations]="prepareRoute(outlet)">
+			<router-outlet #outlet="outlet">
+	
+	animations.ts
+		copiar el codigo de https://angular.io/guide/route-animations
+		
+	app.component.ts
+		prepareRoute(outlet: RouterOutlet) {
+			return outlet && outlet.activatedRouteData && outlet.activatedRouteData.animation;
+		}
+		
+		@Component({
+			selector: 'app-root',
+			templateUrl: 'app.component.html',
+			styleUrls: ['app.component.css'],
+			animations: [
+				slideInAnimation
+				// animation triggers go here
+			]
+		})
+	
+
+
+
+FormGroup   tiene FormControl
+              <p>{{formRegistro.value|json}}</p>
+              <p>{{formRegistro.valid}}</p>
+ 
+ firebaseUsuarios.list   toda la lista
+ firebaseUsuarios.object  todos los objetos
 
